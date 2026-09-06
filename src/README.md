@@ -12,7 +12,7 @@ A super simple FastAPI application that allows students to view and sign up for 
 1. Install the dependencies:
 
    ```
-   pip install fastapi uvicorn
+   pip install -r ../requirements.txt
    ```
 
 2. Run the application:
@@ -47,4 +47,10 @@ The application uses a simple data model with meaningful identifiers:
    - Name
    - Grade level
 
-All data is stored in memory, which means data will be reset when the server restarts.
+Activity and participant data is stored in SQLite at `src/activities.db` by default,
+so it survives server restarts. Set `ACTIVITIES_DB_PATH` to use a different database
+location. To reset local data, stop the server and delete the SQLite file; the next
+startup will recreate the seeded activities.
+
+The signup operation uses a SQLite write transaction while checking capacity and
+adding a participant, so concurrent signups cannot exceed an activity's limit.
